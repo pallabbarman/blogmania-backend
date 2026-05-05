@@ -4,3 +4,10 @@ export interface ApiResponseType<T> {
     message: string;
     data: T;
 }
+
+export interface ApiErrorResponseType {
+    statusCode: number;
+    success: boolean;
+    message: string;
+    errors?: unknown[] | undefined;
+}

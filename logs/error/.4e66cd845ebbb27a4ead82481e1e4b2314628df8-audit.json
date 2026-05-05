@@ -14,6 +14,11 @@
             "date": 1777961148170,
             "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-12.log",
             "hash": "595748f97984c954211f917927e3d5f27a6988a803d40c265ed0ffdb99d8fc4f"
+        },
+        {
+            "date": 1777966830710,
+            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-13.log",
+            "hash": "01f69a700f670740bee0b743c70cf97000d591918d9f760b84adcfa7f91a8936"
         }
     ],
     "hashType": "sha256"
