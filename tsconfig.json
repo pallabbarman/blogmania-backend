@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es2023",
+        "moduleResolution": "bundler",
+        "esModuleInterop": true,
+        "ignoreDeprecations": "6.0",
+        "types": ["node"],
+        "strict": true,
+        "skipLibCheck": true,
+        "strictNullChecks": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "paths": {
+            "configs/*": ["./src/configs/*"],
+            "generated/*": ["./src/generated/*"],
+            "errors/*": ["./src/errors/*"],
+            "middlewares/*": ["./src/middlewares/*"],
+            "modules/*": ["./src/modules/*"],
+            "routes/*": ["./src/routes/*"],
+            "types/*": ["./src/types/*"],
+            "utils/*": ["./src/utils/*"]
+        }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "logs"]
+}

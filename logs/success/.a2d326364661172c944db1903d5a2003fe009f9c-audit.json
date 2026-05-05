@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/success/.a2d326364661172c944db1903d5a2003fe009f9c-audit.json",
+    "files": [
+        {
+            "date": 1777959696483,
+            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/success/success-2026-05-05-11.log",
+            "hash": "084620962a646b591dc8adfd1698ddee8b18385f194ce93e76494fdcc462d0ef"
+        }
+    ],
+    "hashType": "sha256"
+}
