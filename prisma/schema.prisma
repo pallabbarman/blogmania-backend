@@ -16,6 +16,7 @@ model User {
   bio          String?
   phone        String?
   profileImage String?
+  refreshToken String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
