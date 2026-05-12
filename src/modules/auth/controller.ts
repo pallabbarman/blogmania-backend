@@ -4,8 +4,6 @@ import { sendResponse } from 'utils/response';
 import { newRefreshToken, signIn, signUp } from './service';
 
 export const register = asyncHandler(async (req, res) => {
-    console.log('called');
-
     const result = await signUp(req.body);
 
     sendResponse(res, {

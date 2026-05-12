@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/logs/success/.678f750de6d70e6669bef2f93608a8a9ccea8d48-audit.json",
+    "files": [
+        {
+            "date": 1778601435974,
+            "name": "/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/logs/success/success-2026-05-12-21.log",
+            "hash": "87db963f329acc02d960f3cb9bbe116af3bda5b98377a69233da9daec3363fb5"
+        },
+        {
+            "date": 1778601621858,
+            "name": "/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/logs/success/success-2026-05-12-22.log",
+            "hash": "a509f30541b272981be1613005172848e4c09830221380719499185d4e2ced8c"
+        },
+        {
+            "date": 1778609728642,
+            "name": "/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/logs/success/success-2026-05-13-00.log",
+            "hash": "a64fd600241abf0e17be38e57a0cdfc9c1d10ced1d38374afb3965a9d46595d9"
+        }
+    ],
+    "hashType": "sha256"
+}
