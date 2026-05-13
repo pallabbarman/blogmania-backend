@@ -10,7 +10,7 @@ const roleGuard =
             return next(new HttpError(status.UNAUTHORIZED, 'Unauthorized'));
         }
 
-        if (!allowedRoles.includes(req.user.role)) {
+        if (req.user?.role && !allowedRoles.includes(req.user.role)) {
             return next(new HttpError(status.FORBIDDEN, 'Forbidden: insufficient permissions'));
         }
 

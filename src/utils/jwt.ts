@@ -11,5 +11,8 @@ export const generateRefreshToken = (payload: Record<string, unknown>) =>
         expiresIn: Number(configs.jwt.refreshExpiresIn),
     });
 
+export const verifyAccessToken = (token: string) =>
+    jwt.verify(token, configs.jwt.accessSecret as Secret);
+
 export const verifyRefreshToken = (token: string) =>
     jwt.verify(token, configs.jwt.refreshSecret as Secret);

@@ -5,7 +5,7 @@ import { ZodType } from 'zod';
 
 export const requiredField = (value: unknown, fieldName: string): string => {
     if (!value || typeof value !== 'string') {
-        throw new HttpError(status.NOT_FOUND, `${fieldName} is required`);
+        throw new HttpError(status.BAD_REQUEST, `${fieldName} is required`);
     }
 
     return value;
@@ -16,7 +16,7 @@ export const validateSchema =
         const result = schema.safeParse(req.body);
 
         if (!result.success) {
-            throw new HttpError(400, 'Validation error', result.error.issues);
+            return next(new HttpError(400, 'Validation error', result.error.issues));
         }
 
         req.body = result.data;

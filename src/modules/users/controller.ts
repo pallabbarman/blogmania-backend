@@ -8,7 +8,7 @@ import { findAllUsers, findUser } from './service';
 export const getAllUsers = asyncHandler(async (_req, res) => {
     const users = await findAllUsers();
 
-    sendResponse<User[]>(res, {
+    sendResponse<Omit<User, 'password'>[]>(res, {
         statusCode: status.OK,
         success: true,
         message: 'Users retrieved successfully!',
@@ -21,7 +21,7 @@ export const getUser = asyncHandler(async (req, res) => {
 
     const user = await findUser(id);
 
-    sendResponse<User>(res, {
+    sendResponse<Omit<User, 'password'>>(res, {
         statusCode: status.OK,
         success: true,
         message: 'User retrieved successfully!',

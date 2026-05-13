@@ -6,29 +6,14 @@
     "auditLog": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/.4e66cd845ebbb27a4ead82481e1e4b2314628df8-audit.json",
     "files": [
         {
-            "date": 1777959696483,
-            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-11.log",
-            "hash": "600870f39fdd788d9ce3994af15b83effbdaf4e13f0b274fa182cf9e04a385fb"
+            "date": 1778673352486,
+            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-13-17.log",
+            "hash": "e45599e890a59ae7fddb9036de7af202abc17024d6e6be0ec703951b746e8054"
         },
         {
-            "date": 1777961148170,
-            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-12.log",
-            "hash": "595748f97984c954211f917927e3d5f27a6988a803d40c265ed0ffdb99d8fc4f"
-        },
-        {
-            "date": 1777966830710,
-            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-13.log",
-            "hash": "01f69a700f670740bee0b743c70cf97000d591918d9f760b84adcfa7f91a8936"
-        },
-        {
-            "date": 1777981362396,
-            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-17.log",
-            "hash": "dffa1bb4599b3606e3cd77b00a56f94f08bbca040d56b26ac387c07c34619213"
-        },
-        {
-            "date": 1777982867245,
-            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-05-18.log",
-            "hash": "173fb0ea67b49ad5893ede673d7b16a40cb5d73c07a8270cbabd3509ceb47ff0"
+            "date": 1778675804856,
+            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-13-18.log",
+            "hash": "15b77c3dbd0d31868e2ff55fb716b0bf44031add7c6a2388d29da89ac4cf5dcc"
         }
     ],
     "hashType": "sha256"

@@ -24,7 +24,7 @@ export const signUp = async (data: User) => {
         },
     });
 
-    const accessToken = generateAccessToken({ userId: user.id });
+    const accessToken = generateAccessToken({ userId: user.id, role: user.role });
     const refreshToken = generateRefreshToken({ userId: user.id });
 
     await prisma.user.update({
@@ -43,16 +43,16 @@ export const signIn = async (data: User) => {
     });
 
     if (!user) {
-        throw new HttpError(status.NOT_FOUND, 'User does not exist');
+        throw new HttpError(status.UNAUTHORIZED, 'Invalid email or password');
     }
 
     const isPasswordValid = await compare(data.password, user.password);
 
     if (!isPasswordValid) {
-        throw new HttpError(status.UNAUTHORIZED, 'Password is incorrect');
+        throw new HttpError(status.UNAUTHORIZED, 'Invalid email or password');
     }
 
-    const accessToken = generateAccessToken({ userId: user.id });
+    const accessToken = generateAccessToken({ userId: user.id, role: user.role });
     const refreshToken = generateRefreshToken({ userId: user.id });
 
     await prisma.user.update({
@@ -65,7 +65,7 @@ export const signIn = async (data: User) => {
     return { accessToken, refreshToken };
 };
 
-export const newRefreshToken = async (refreshToken: string) => {
+export const rotateRefreshToken = async (refreshToken: string) => {
     const payload = verifyRefreshToken(refreshToken) as { userId: string };
 
     const user = await prisma.user.findUnique({
@@ -81,7 +81,22 @@ export const newRefreshToken = async (refreshToken: string) => {
         throw new HttpError(status.UNAUTHORIZED, 'Invalid refresh token');
     }
 
-    const newAccessToken = generateAccessToken({ userId: user.id });
+    const newAccessToken = generateAccessToken({ userId: user.id, role: user.role });
+    const newRefreshToken = generateRefreshToken({ userId: user.id });
 
-    return { accessToken: newAccessToken };
+    await prisma.user.update({
+        where: { id: user.id },
+        data: {
+            refreshToken: await hash(newRefreshToken, Number(configs.bcryptSalt)),
+        },
+    });
+
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+};
+
+export const signOut = async (userId: string) => {
+    await prisma.user.update({
+        where: { id: userId },
+        data: { refreshToken: null },
+    });
 };

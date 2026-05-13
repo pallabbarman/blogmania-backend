@@ -2,7 +2,7 @@ import HttpError from 'errors/httpError';
 import { NextFunction, Request, Response } from 'express';
 import status from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
-import { verifyRefreshToken } from 'utils/jwt';
+import { verifyAccessToken } from 'utils/jwt';
 
 const authGuard = (req: Request, _res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
@@ -14,7 +14,7 @@ const authGuard = (req: Request, _res: Response, next: NextFunction) => {
     const token = authHeader.split(' ')[1];
 
     try {
-        const decoded = verifyRefreshToken(token as string) as JwtPayload;
+        const decoded = verifyAccessToken(token as string) as JwtPayload;
 
         req.user = decoded;
         next();

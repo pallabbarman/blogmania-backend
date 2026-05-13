@@ -1,7 +1,8 @@
 import status from 'http-status';
 import { asyncHandler } from 'utils/asyncHandler';
 import { sendResponse } from 'utils/response';
-import { newRefreshToken, signIn, signUp } from './service';
+import { requiredField } from 'utils/validate';
+import { rotateRefreshToken, signIn, signOut, signUp } from './service';
 
 export const register = asyncHandler(async (req, res) => {
     const result = await signUp(req.body);
@@ -26,12 +27,23 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 export const refreshToken = asyncHandler(async (req, res) => {
-    const data = await newRefreshToken(req.body.refreshToken);
+    const data = await rotateRefreshToken(req.body.refreshToken);
 
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Token refreshed',
         data,
+    });
+});
+
+export const logout = asyncHandler(async (req, res) => {
+    await signOut(requiredField(req.user.userId, 'User id'));
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'Logged out successfully',
+        data: null,
     });
 });

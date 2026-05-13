@@ -2,6 +2,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import HttpError from 'errors/httpError';
 import { NextFunction, Request, Response } from 'express';
 import status from 'http-status';
+import jwt from 'jsonwebtoken';
 import { errorResponse } from 'utils/response';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -12,8 +13,30 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
             .json(errorResponse(err.statusCode, err.message, err.errors));
     }
 
-    if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
-        return res.status(404).json(errorResponse(status.NOT_FOUND, err.message));
+    if (err instanceof jwt.TokenExpiredError) {
+        return res
+            .status(status.UNAUTHORIZED)
+            .json(errorResponse(status.UNAUTHORIZED, 'Token has expired'));
+    }
+
+    if (err instanceof jwt.JsonWebTokenError) {
+        return res
+            .status(status.UNAUTHORIZED)
+            .json(errorResponse(status.UNAUTHORIZED, 'Invalid token'));
+    }
+
+    if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+            return res
+                .status(status.NOT_FOUND)
+                .json(errorResponse(status.NOT_FOUND, 'Record not found'));
+        }
+
+        if (err.code === 'P2002') {
+            return res
+                .status(status.CONFLICT)
+                .json(errorResponse(status.CONFLICT, 'Duplicate entry'));
+        }
     }
 
     return res
