@@ -3,6 +3,7 @@ import HttpError from 'errors/httpError';
 import { NextFunction, Request, Response } from 'express';
 import status from 'http-status';
 import jwt from 'jsonwebtoken';
+import { errorLogger } from 'utils/logger';
 import { errorResponse } from 'utils/response';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,6 +40,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
         }
     }
 
+    errorLogger.error(`${err.message}`, { stack: err.stack });
     return res
         .status(status.INTERNAL_SERVER_ERROR)
         .json(errorResponse(status.INTERNAL_SERVER_ERROR, 'Internal server error'));

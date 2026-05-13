@@ -4,6 +4,7 @@ import HttpError from 'errors/httpError';
 import { User } from 'generated/prisma/client';
 import status from 'http-status';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from 'utils/jwt';
+import { errorLogger } from 'utils/logger';
 import { prisma } from 'utils/prisma';
 
 export const signUp = async (data: User) => {
@@ -43,12 +44,14 @@ export const signIn = async (data: User) => {
     });
 
     if (!user) {
+        errorLogger.warn(`Failed login attempt — email not found: ${data.email}`);
         throw new HttpError(status.UNAUTHORIZED, 'Invalid email or password');
     }
 
     const isPasswordValid = await compare(data.password, user.password);
 
     if (!isPasswordValid) {
+        errorLogger.warn(`Failed login attempt — wrong password for: ${data.email}`);
         throw new HttpError(status.UNAUTHORIZED, 'Invalid email or password');
     }
 

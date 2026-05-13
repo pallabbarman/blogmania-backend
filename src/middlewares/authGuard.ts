@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import status from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import { verifyAccessToken } from 'utils/jwt';
+import { errorLogger } from 'utils/logger';
 
 const authGuard = (req: Request, _res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
@@ -18,7 +19,8 @@ const authGuard = (req: Request, _res: Response, next: NextFunction) => {
 
         req.user = decoded;
         next();
-    } catch {
+    } catch (err) {
+        errorLogger.warn(`Auth failure [${req.method} ${req.url}]: ${(err as Error).message}`);
         next(new HttpError(status.UNAUTHORIZED, 'Invalid or expired token'));
     }
 };
