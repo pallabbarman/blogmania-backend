@@ -3,7 +3,7 @@ import status from 'http-status';
 import { asyncHandler } from 'utils/asyncHandler';
 import { sendResponse } from 'utils/response';
 import { requiredField } from 'utils/validate';
-import { findAllUsers, findUser } from './service';
+import { findAllUsers, findUser, patchUser, removeUser } from './service';
 
 export const getAllUsers = asyncHandler(async (_req, res) => {
     const users = await findAllUsers();
@@ -26,5 +26,31 @@ export const getUser = asyncHandler(async (req, res) => {
         success: true,
         message: 'User retrieved successfully!',
         data: user,
+    });
+});
+
+export const updateUser = asyncHandler(async (req, res) => {
+    const id = requiredField(req.params.id, 'Id');
+
+    const user = await patchUser(id, req.body);
+
+    sendResponse<Omit<User, 'password'>>(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'User data updated successfully!',
+        data: user,
+    });
+});
+
+export const deleteUser = asyncHandler(async (req, res) => {
+    const id = requiredField(req.params.id, 'Id');
+
+    const result = await removeUser(id);
+
+    sendResponse<User>(res, {
+        statusCode: status.OK,
+        success: true,
+        message: 'User deleted successfully!',
+        data: result,
     });
 });
