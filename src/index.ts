@@ -1,7 +1,7 @@
 import { Server } from 'http';
 import { errorLogger, logger } from 'utils/logger';
 import app from './app';
-import configs from './configs';
+import configs from './configs/env';
 
 const startServer = async () => {
     const server: Server = app.listen(configs.port, () => {

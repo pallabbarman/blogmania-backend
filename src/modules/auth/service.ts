@@ -1,5 +1,5 @@
 import { compare, hash } from 'bcrypt';
-import configs from 'configs/index';
+import configs from 'configs/env';
 import HttpError from 'errors/httpError';
 import { User } from 'generated/prisma/client';
 import status from 'http-status';

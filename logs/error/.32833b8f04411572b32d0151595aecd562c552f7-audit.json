@@ -24,6 +24,11 @@
             "date": 1778998206634,
             "name": "/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/logs/error/error-2026-05-17-12.log",
             "hash": "739b3f34ca783b4b7305407e41ffb19d5dcc49fd3b85bd2eb86245ccafcc1a0a"
+        },
+        {
+            "date": 1779001362090,
+            "name": "/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/logs/error/error-2026-05-17-13.log",
+            "hash": "e411a448d02514154c2204d26b24148ba0779a0c7ddfc2afa2b323c8f72ba2c1"
         }
     ],
     "hashType": "sha256"
