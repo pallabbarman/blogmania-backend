@@ -15,18 +15,20 @@ enum UserRole {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   firstName    String
   lastName     String
-  email        String   @unique
+  email        String    @unique
   password     String
-  role         UserRole @default(USER)
+  role         UserRole  @default(USER)
   bio          String?
   phone        String?
   profileImage String?
   refreshToken String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  blogs        Blog[]
+  comments     Comment[]
 }
 
 model Contact {
@@ -44,4 +46,31 @@ model Topic {
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  blogs     Blog[]
+}
+
+model Blog {
+  id          String    @id @default(uuid())
+  image       String
+  title       String
+  description String    @db.Text
+  tags        String[]  @default([])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  topicId     String
+  topic       Topic     @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blogId    String
+  blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
 }
