@@ -1,18 +1,21 @@
 import { User } from 'generated/prisma/client';
 import status from 'http-status';
 import { asyncHandler } from 'utils/asyncHandler';
-import { sendResponse } from 'utils/response';
+import { parsePaginationQuery } from 'utils/pagination';
+import { sendPaginatedResponse, sendResponse } from 'utils/response';
 import { requiredField } from 'utils/validate';
 import { findAllUsers, findUser, patchUser, removeUser } from './service';
 
-export const getAllUsers = asyncHandler(async (_req, res) => {
-    const users = await findAllUsers();
+export const getAllUsers = asyncHandler(async (req, res) => {
+    const query = parsePaginationQuery(req);
+    const results = await findAllUsers(query);
 
-    sendResponse<Omit<User, 'password'>[]>(res, {
+    sendPaginatedResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Users retrieved successfully!',
-        data: users,
+        data: results.users,
+        meta: results.meta,
     });
 });
 

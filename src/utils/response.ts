@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { PaginationResponseType } from 'types/pagination';
 import { ApiErrorResponseType, ApiResponseType } from 'types/response';
 
 export const sendResponse = <T>(res: Response, data: ApiResponseType<T>): void => {
@@ -10,6 +11,16 @@ export const sendResponse = <T>(res: Response, data: ApiResponseType<T>): void =
     };
 
     res.status(data.statusCode).json(responseData);
+};
+
+export const sendPaginatedResponse = <T>(res: Response, data: PaginationResponseType<T>): void => {
+    res.status(data.statusCode).json({
+        statusCode: data.statusCode,
+        success: data.success,
+        message: data.message,
+        meta: data.meta,
+        data: data.data,
+    });
 };
 
 export const errorResponse = (

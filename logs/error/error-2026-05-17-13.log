@@ -1,1 +1,38 @@
 Sun May 17 2026 13:14:17 [debug] error: "expiresIn" should be a number of seconds or string representing a timespan
+Sun May 17 2026 13:30:54 [debug] error: "expiresIn" should be a number of seconds or string representing a timespan
+Sun May 17 2026 13:58:6 [debug] error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/src/modules/auth/service.ts:11:44
+
+   8 import { prisma } from 'utils/prisma';
+   9 
+  10 export const signUp = async (data: User) => {
+→ 11     const existingUser = await prisma.user.findUnique(
+Server has closed the connection.
+Sun May 17 2026 13:59:2 [debug] error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/src/modules/auth/service.ts:11:44
+
+   8 import { prisma } from 'utils/prisma';
+   9 
+  10 export const signUp = async (data: User) => {
+→ 11     const existingUser = await prisma.user.findUnique(
+Server has closed the connection.
+Sun May 17 2026 13:59:14 [debug] error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/src/modules/auth/service.ts:11:44
+
+   8 import { prisma } from 'utils/prisma';
+   9 
+  10 export const signUp = async (data: User) => {
+→ 11     const existingUser = await prisma.user.findUnique(
+Server has closed the connection.
+Sun May 17 2026 13:59:37 [debug] error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Users/pallab/Documents/Work/Personal/blog/blogmania-backend/src/modules/auth/service.ts:11:44
+
+   8 import { prisma } from 'utils/prisma';
+   9 
+  10 export const signUp = async (data: User) => {
+→ 11     const existingUser = await prisma.user.findUnique(
+Server has closed the connection.

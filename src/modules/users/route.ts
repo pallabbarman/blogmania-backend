@@ -8,7 +8,11 @@ import { userUpdateSchema } from './schema';
 
 const userRoutes = Router();
 
-userRoutes.get('/', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), getAllUsers);
+userRoutes.get(
+    '/',
+    // authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    getAllUsers
+);
 userRoutes.get('/:id', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), getUser);
 userRoutes.patch(
     '/:id',
