@@ -1,7 +1,7 @@
 {
     "name": "blogmania",
     "version": "1.0.0",
-    "main": "src/index.ts",
+    "main": "dist/index.js",
     "type": "module",
     "author": "Pallab Bharman",
     "license": "ISC",
@@ -11,7 +11,7 @@
         "dev": "tsx watch src/index.ts",
         "start": "node dist/index.js",
         "generate": "npx prisma generate",
-        "build": "npm run generate && npx tsc && npx tsc-alias --resolve-full-paths",
+        "build": "npx prisma migrate deploy && npx tsc && npx tsc-alias --resolve-full-paths",
         "lint": "eslint",
         "lint-fix": "eslint . --fix"
     },
