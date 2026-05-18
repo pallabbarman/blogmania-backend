@@ -5,7 +5,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export default {
     env: process.env.NODE_ENV,
-    port: process.env.PORT,
+    port: process.env.PORT || 8000,
     databaseUrl: process.env.DATABASE_URL,
     bcryptSalt: process.env.BCRYPT_SALT,
     jwt: {
