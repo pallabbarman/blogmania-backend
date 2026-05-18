@@ -1,7 +1,9 @@
+import { Blog } from 'generated/prisma/client';
 import { UserRole } from 'generated/prisma/enums';
 import status from 'http-status';
 import { asyncHandler } from 'utils/asyncHandler';
-import { sendResponse } from 'utils/response';
+import { parsePaginationQuery } from 'utils/pagination';
+import { sendPaginatedResponse, sendResponse } from 'utils/response';
 import { requiredField } from 'utils/validate';
 import { findAllBlogs, findBlog, findMyBlogs, insertBlog, patchBlog, removeBlog } from './service';
 
@@ -11,7 +13,7 @@ export const createBlog = asyncHandler(async (req, res) => {
         userId: req.user.userId as string,
     });
 
-    sendResponse(res, {
+    sendResponse<Blog>(res, {
         statusCode: status.CREATED,
         success: true,
         message: 'Blog created successfully',
@@ -19,14 +21,16 @@ export const createBlog = asyncHandler(async (req, res) => {
     });
 });
 
-export const getAllBlogs = asyncHandler(async (_req, res) => {
-    const result = await findAllBlogs();
+export const getAllBlogs = asyncHandler(async (req, res) => {
+    const query = parsePaginationQuery(req);
+    const { blogs, meta } = await findAllBlogs(query);
 
-    sendResponse(res, {
+    sendPaginatedResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Blogs retrieved successfully',
-        data: result,
+        data: blogs,
+        meta,
     });
 });
 
@@ -35,7 +39,7 @@ export const getBlog = asyncHandler(async (req, res) => {
 
     const blog = await findBlog(id);
 
-    sendResponse(res, {
+    sendResponse<Blog>(res, {
         statusCode: status.OK,
         success: true,
         message: 'Blog retrieved successfully',
@@ -44,13 +48,15 @@ export const getBlog = asyncHandler(async (req, res) => {
 });
 
 export const getMyBlogs = asyncHandler(async (req, res) => {
-    const blogs = await findMyBlogs(req.user.userId as string);
+    const query = parsePaginationQuery(req);
+    const { blogs, meta } = await findMyBlogs(req.user.userId as string, query);
 
-    sendResponse(res, {
+    sendPaginatedResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Your blogs retrieved successfully',
         data: blogs,
+        meta,
     });
 });
 
@@ -59,7 +65,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
 
     const blog = await patchBlog(id, req.user.userId as string, req.body);
 
-    sendResponse(res, {
+    sendResponse<Blog>(res, {
         statusCode: status.OK,
         success: true,
         message: 'Blog updated successfully',

@@ -1,7 +1,8 @@
 import { Contact } from 'generated/prisma/client';
 import status from 'http-status';
 import { asyncHandler } from 'utils/asyncHandler';
-import { sendResponse } from 'utils/response';
+import { parsePaginationQuery } from 'utils/pagination';
+import { sendPaginatedResponse, sendResponse } from 'utils/response';
 import { requiredField } from 'utils/validate';
 import { findAllContacts, findContact, insertContact, removeContact } from './service';
 
@@ -9,21 +10,23 @@ export const createContact = asyncHandler(async (req, res) => {
     const result = await insertContact(req.body);
 
     sendResponse<Contact>(res, {
-        statusCode: status.OK,
+        statusCode: status.CREATED,
         success: true,
         message: 'Thank you for contacting with us. We will reach you out shortly!',
         data: result,
     });
 });
 
-export const getAllContacts = asyncHandler(async (_req, res) => {
-    const result = await findAllContacts();
+export const getAllContacts = asyncHandler(async (req, res) => {
+    const query = parsePaginationQuery(req);
+    const { contacts, meta } = await findAllContacts(query);
 
-    sendResponse<Contact[]>(res, {
+    sendPaginatedResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'All contact information are retrieved successfully!',
-        data: result,
+        data: contacts,
+        meta,
     });
 });
 

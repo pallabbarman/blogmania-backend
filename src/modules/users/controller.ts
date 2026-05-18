@@ -8,14 +8,14 @@ import { findAllUsers, findUser, patchUser, removeUser } from './service';
 
 export const getAllUsers = asyncHandler(async (req, res) => {
     const query = parsePaginationQuery(req);
-    const results = await findAllUsers(query);
+    const { meta, users } = await findAllUsers(query);
 
     sendPaginatedResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Users retrieved successfully!',
-        data: results.users,
-        meta: results.meta,
+        data: users,
+        meta,
     });
 });
 

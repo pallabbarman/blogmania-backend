@@ -20,20 +20,20 @@ commentRoutes.post(
     '/',
     validateSchema(commentSchema),
     authGuard,
-    roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    roleGuard(UserRole.USER, UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
     createComment
 );
 commentRoutes.patch(
     '/:id',
     validateSchema(commentSchema),
     authGuard,
-    roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    roleGuard(UserRole.USER, UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
     updateComment
 );
 commentRoutes.delete(
     '/:id',
     authGuard,
-    roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    roleGuard(UserRole.USER, UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
     deleteComment
 );
 

@@ -1,7 +1,8 @@
 import { Comment } from 'generated/prisma/client';
 import status from 'http-status';
 import { asyncHandler } from 'utils/asyncHandler';
-import { sendResponse } from 'utils/response';
+import { parsePaginationQuery } from 'utils/pagination';
+import { sendPaginatedResponse, sendResponse } from 'utils/response';
 import { requiredField } from 'utils/validate';
 import {
     findAllComments,
@@ -22,14 +23,16 @@ export const createComment = asyncHandler(async (req, res) => {
     });
 });
 
-export const getAllComments = asyncHandler(async (_req, res) => {
-    const result = await findAllComments();
+export const getAllComments = asyncHandler(async (req, res) => {
+    const query = parsePaginationQuery(req);
+    const { comments, meta } = await findAllComments(query);
 
-    sendResponse<Comment[]>(res, {
+    sendPaginatedResponse(res, {
         statusCode: status.OK,
         success: true,
         message: 'Comments are retrieved successfully',
-        data: result,
+        data: comments,
+        meta,
     });
 });
 

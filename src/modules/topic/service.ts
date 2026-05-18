@@ -1,7 +1,11 @@
 import HttpError from 'errors/httpError';
-import { Topic } from 'generated/prisma/client';
+import { Prisma, Topic } from 'generated/prisma/client';
 import status from 'http-status';
+import { TopicQueryType } from 'types/topic';
+import { buildPaginationMetaData, getPaginationSkipData } from 'utils/pagination';
 import { prisma } from 'utils/prisma';
+import { isAllowedSortField } from 'utils/sort';
+import { topicSortFields } from './constant';
 
 export const insertTopic = async (data: Topic) => {
     const result = await prisma.topic.create({
@@ -11,10 +15,30 @@ export const insertTopic = async (data: Topic) => {
     return result;
 };
 
-export const findAllTopics = async () => {
-    const result = await prisma.topic.findMany();
+export const findAllTopics = async (query: TopicQueryType) => {
+    const { page, limit, search, sortBy, sortOrder, name } = query;
+    const skip = getPaginationSkipData(page, limit);
 
-    return result;
+    const where: Prisma.TopicWhereInput = {
+        ...(name && { name }),
+        ...(search && {
+            OR: [{ name: { contains: search, mode: 'insensitive' } }],
+        }),
+    };
+
+    const orderBy: Prisma.TopicOrderByWithRelationInput = isAllowedSortField(
+        sortBy,
+        topicSortFields
+    )
+        ? { [sortBy]: sortOrder }
+        : { createdAt: sortOrder };
+
+    const [topics, total] = await prisma.$transaction([
+        prisma.topic.findMany({ where, orderBy, skip, take: limit }),
+        prisma.topic.count({ where }),
+    ]);
+
+    return { topics, meta: buildPaginationMetaData(total, page, limit) };
 };
 
 export const findTopic = async (id: string) => {

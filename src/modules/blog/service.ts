@@ -1,7 +1,11 @@
 import HttpError from 'errors/httpError';
-import { Blog, UserRole } from 'generated/prisma/client';
+import { Blog, Prisma, UserRole } from 'generated/prisma/client';
 import status from 'http-status';
+import { BlogQueryType } from 'types/blog';
+import { buildPaginationMetaData, getPaginationSkipData } from 'utils/pagination';
 import { prisma } from 'utils/prisma';
+import { isAllowedSortField } from 'utils/sort';
+import { blogSortFields } from './constant';
 
 export const insertBlog = async (data: Blog) => {
     const topic = await prisma.topic.findUnique({ where: { id: data.topicId } });
@@ -15,10 +19,32 @@ export const insertBlog = async (data: Blog) => {
     });
 };
 
-export const findAllBlogs = async () => {
-    const result = await prisma.contact.findMany();
+export const findAllBlogs = async (query: BlogQueryType) => {
+    const { page, limit, search, sortBy, sortOrder, topicId, tag } = query;
+    const skip = getPaginationSkipData(page, limit);
 
-    return result;
+    const where: Prisma.BlogWhereInput = {
+        ...(topicId && { topicId }),
+        ...(tag && { tags: { has: tag } }),
+        ...(search && {
+            OR: [
+                { title: { contains: search, mode: 'insensitive' } },
+                { tags: { has: search } },
+                { topic: { name: { contains: search, mode: 'insensitive' } } },
+            ],
+        }),
+    };
+
+    const orderBy: Prisma.BlogOrderByWithRelationInput = isAllowedSortField(sortBy, blogSortFields)
+        ? { [sortBy]: sortOrder }
+        : { createdAt: sortOrder };
+
+    const [blogs, total] = await prisma.$transaction([
+        prisma.blog.findMany({ where, orderBy, skip, take: limit }),
+        prisma.blog.count({ where }),
+    ]);
+
+    return { blogs, meta: buildPaginationMetaData(total, page, limit) };
 };
 
 export const findBlog = async (id: string) => {
@@ -33,11 +59,25 @@ export const findBlog = async (id: string) => {
     return blog;
 };
 
-export const findMyBlogs = async (userId: string) => {
-    return prisma.blog.findMany({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-    });
+export const findMyBlogs = async (userId: string, query: BlogQueryType) => {
+    const { page, limit, search, sortBy, sortOrder } = query;
+    const skip = getPaginationSkipData(page, limit);
+
+    const where: Prisma.BlogWhereInput = {
+        userId,
+        ...(search && { title: { contains: search, mode: 'insensitive' } }),
+    };
+
+    const orderBy: Prisma.BlogOrderByWithRelationInput = isAllowedSortField(sortBy, blogSortFields)
+        ? { [sortBy]: sortOrder }
+        : { createdAt: sortOrder };
+
+    const [blogs, total] = await prisma.$transaction([
+        prisma.blog.findMany({ where, orderBy, skip, take: limit }),
+        prisma.blog.count({ where }),
+    ]);
+
+    return { blogs, meta: buildPaginationMetaData(total, page, limit) };
 };
 
 export const patchBlog = async (id: string, userId: string, data: Partial<Blog>) => {
