@@ -9,6 +9,11 @@
             "date": 1779086991902,
             "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-18-12.log",
             "hash": "fa2a7433babd1b1d854bd37f32f18df65388d6dbbd46d8749032b16a36a12fc7"
+        },
+        {
+            "date": 1779089267262,
+            "name": "/Users/pallab/Documents/Pallab/Personal/blog-backend/logs/error/error-2026-05-18-13.log",
+            "hash": "c0b497b0bb87239328078fb9c479f8ec84ff4cdabf224f18591b258a8864bdf9"
         }
     ],
     "hashType": "sha256"
