@@ -1,0 +1,15 @@
+import { Router } from 'express';
+import { UserRole } from '../../generated/prisma/enums.js';
+import authGuard from '../../middlewares/authGuard.js';
+import roleGuard from '../../middlewares/roleGuard.js';
+import { validateSchema } from '../../utils/validate.js';
+import { createBlog, deleteBlog, getAllBlogs, getBlog, getMyBlogs, updateBlog } from './controller.js';
+import { createBlogSchema, updateBlogSchema } from './schema.js';
+const blogRoutes = Router();
+blogRoutes.get('/', getAllBlogs);
+blogRoutes.get('/:id', getBlog);
+blogRoutes.post('/', authGuard, roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), validateSchema(createBlogSchema), createBlog);
+blogRoutes.get('/me/blogs', authGuard, roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), getMyBlogs);
+blogRoutes.patch('/:id', authGuard, roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), validateSchema(updateBlogSchema), updateBlog);
+blogRoutes.delete('/:id', authGuard, roleGuard(UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), deleteBlog);
+export default blogRoutes;

@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { UserRole } from '../../generated/prisma/enums.js';
+import authGuard from '../../middlewares/authGuard.js';
+import roleGuard from '../../middlewares/roleGuard.js';
+import { validateSchema } from '../../utils/validate.js';
+import { deleteUser, getAllUsers, getUser, updateUser } from './controller.js';
+import { userUpdateSchema } from './schema.js';
+const userRoutes = Router();
+userRoutes.get('/', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), getAllUsers);
+userRoutes.get('/:id', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), getUser);
+userRoutes.patch('/:id', validateSchema(userUpdateSchema), authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), updateUser);
+userRoutes.delete('/:id', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), deleteUser);
+export default userRoutes;

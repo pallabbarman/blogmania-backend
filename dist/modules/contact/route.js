@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { UserRole } from '../../generated/prisma/enums.js';
+import authGuard from '../../middlewares/authGuard.js';
+import roleGuard from '../../middlewares/roleGuard.js';
+import { validateSchema } from '../../utils/validate.js';
+import { createContact, deleteContact, getAllContacts, getContact } from './controller.js';
+import { contactSchema } from './schema.js';
+const contactRoutes = Router();
+contactRoutes.get('/', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), getAllContacts);
+contactRoutes.get('/:id', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), getContact);
+contactRoutes.post('/', validateSchema(contactSchema), createContact);
+contactRoutes.delete('/:id', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), deleteContact);
+export default contactRoutes;

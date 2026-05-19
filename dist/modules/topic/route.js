@@ -1,0 +1,14 @@
+import { Router } from 'express';
+import { UserRole } from '../../generated/prisma/enums.js';
+import authGuard from '../../middlewares/authGuard.js';
+import roleGuard from '../../middlewares/roleGuard.js';
+import { validateSchema } from '../../utils/validate.js';
+import { createTopic, deleteTopic, getAllTopics, getTopic, updateTopic } from './controller.js';
+import { topicSchema } from './schema.js';
+const topicRoutes = Router();
+topicRoutes.get('/', getAllTopics);
+topicRoutes.get('/:id', getTopic);
+topicRoutes.post('/', validateSchema(topicSchema), authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), createTopic);
+topicRoutes.patch('/:id', validateSchema(topicSchema), authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), updateTopic);
+topicRoutes.delete('/:id', authGuard, roleGuard(UserRole.ADMIN, UserRole.SUPER_ADMIN), deleteTopic);
+export default topicRoutes;

@@ -1,0 +1,14 @@
+import { Router } from 'express';
+import { UserRole } from '../../generated/prisma/enums.js';
+import authGuard from '../../middlewares/authGuard.js';
+import roleGuard from '../../middlewares/roleGuard.js';
+import { validateSchema } from '../../utils/validate.js';
+import { createComment, deleteComment, getAllComments, getComment, updateComment, } from './controller.js';
+import { commentSchema } from './schema.js';
+const commentRoutes = Router();
+commentRoutes.get('/', getAllComments);
+commentRoutes.get('/:id', getComment);
+commentRoutes.post('/', validateSchema(commentSchema), authGuard, roleGuard(UserRole.USER, UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), createComment);
+commentRoutes.patch('/:id', validateSchema(commentSchema), authGuard, roleGuard(UserRole.USER, UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), updateComment);
+commentRoutes.delete('/:id', authGuard, roleGuard(UserRole.USER, UserRole.AUTHOR, UserRole.ADMIN, UserRole.SUPER_ADMIN), deleteComment);
+export default commentRoutes;
